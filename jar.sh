@@ -1,0 +1,1 @@
+java -jar /Users/jnordling/projects/shape-temp/netcdf-1.0-SNAPSHOT.jar /Users/jnordling/projects/shape-temp/data/org-NLD-5000-sorted.csv /Users/jnordling/projects/shape-temp/netcdf/NLD-5000-bubble-BR-VERSION.nc 5000
