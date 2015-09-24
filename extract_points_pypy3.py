@@ -12,9 +12,11 @@ from shapely.geometry import Point
 from functools import partial
 from itertools import islice
 
+
 def row_in_poly(poly, row):
     p = Point(float(row[1]), float(row[2]))
     return poly.contains(p)
+
 
 def grab_points(points, polygon, job_id, output_file=None):
     lon, lat = 1, 2
@@ -26,11 +28,13 @@ def grab_points(points, polygon, job_id, output_file=None):
     contains_points = ['{},{},{},{}'.format(*p) for p in contains_points]
     return job_id, contains_points, output_file
 
+
 def worker_callback(results):
     job_id, points, output_file = results
     with open(output_file, 'a') as output_f: 
         output_f.writelines(points)
     print('job {} : {} records'.format(job_id, len(points)))
+
 
 def main(input_csv, input_geojson, aoi_field, aoi_id, output_file):
 
