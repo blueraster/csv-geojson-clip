@@ -53,7 +53,7 @@ def main(input_csv, input_geojson, aoi_field, aoi_id, output_file):
                 is_more = True
                 while is_more:
                     job_id += 1
-                    chunksize = 25000
+                    chunksize = 50000
                     chunk = list(islice(f, chunksize))
                     results.append(pool.apply_async(grab_points, args=(chunk, poly, job_id, output_file)))
                     if len(chunk) < chunksize:

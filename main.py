@@ -1,9 +1,11 @@
 import os
 import subprocess
 # GET Chris shape files
-root = '/Users/jnordling/projects/shape-temp/shp/'
-## aws s3 sync s3://emerging-hotspots/Country_Geometry/CountriesPlateCarree_shp /Users/jnordling/projects/shape-temp/shp/
-shpList = os.listdir(root)
+root = './'
+shapeDir = os.path.join(root,'shp')
+shpList = os.listdir(shapeDir)
+dataFile = os.path.join(root,'data','lossyear-treecover-10-5000m.csv')
+size = '2500'
 
 
 def createGeoJSON():
@@ -27,14 +29,31 @@ def moveShapeFiles():
             outputFile = countryISOName+"shp/"+file
             os.rename(inputFile, outputFile)
 
-def main():
+def makeoutputpath(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+    return path
+
+
+def temp():
     dataFile = '/Users/jnordling/projects/shape-temp/data/world-5000-bubble-2014.csv'
     geoJsonFile = '/Users/jnordling/projects/shape-temp/shp/NLD/NLD.geojson'
     iso = 'NLD'
     output = '/Users/jnordling/projects/shape-temp/shp/NLD/5000/COD-5000-bubble.csv'
-    proc = subprocess.Popen(['./clip.sh',dataFile,geoJsonFile,iso,output])
+    proc = subprocess.Popen(['./clip.sh', dataFile, geoJsonFile, iso, output])
     proc.wait()
     print 'Done'
+
+
+def main():
+    for dir in shpList:
+        path = os.path.join(shapeDir,dir)
+        if os.path.isdir(path):
+            geoJsonFile = os.path.join(path,dir+'.geojson')
+            iso = dir
+            output = makeoutputpath(os.path.join(path,size))
+            proc = subprocess.Popen(['./clip.sh', dataFile, geoJsonFile, iso, output])
+
 
 if __name__ == '__main__':
     main()
