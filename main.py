@@ -1,11 +1,12 @@
 import os
 import subprocess
+import shutil
 # GET Chris shape files
 root = './'
 shapeDir = os.path.join(root,'shp')
 shpList = os.listdir(shapeDir)
 dataFile = os.path.join(root,'data','lossyear-treecover-10-5000m.csv')
-size = '2500'
+size = '5000'
 
 
 def createGeoJSON():
@@ -32,6 +33,7 @@ def moveShapeFiles():
 def makeoutputpath(path):
     if not os.path.exists(path):
         os.mkdir(path)
+        #shutil.rmtree(path)
     return path
 
 
@@ -52,7 +54,11 @@ def main():
             geoJsonFile = os.path.join(path,dir+'.geojson')
             iso = dir
             output = makeoutputpath(os.path.join(path,size))
+            output = output+'/' + iso +'.csv'
+            print 'Processing', iso
             proc = subprocess.Popen(['./clip.sh', dataFile, geoJsonFile, iso, output])
+            proc.wait()
+
 
 
 if __name__ == '__main__':
